@@ -51,32 +51,43 @@ const autoReplyMail = async (contact) => {
 };
 
 const bookTalentMail = async (booking) => {
-    const { type, platform, synopsis, duration, payment } = booking;
+    const { type, platform, synopsis, duration, payment, fullName, email } = booking;
 
     await transporter.sendMail({
-        from: `"Talent Booking" <${process.env.MAIL_USER}>`,
-        to: process.env.ADMIN_EMAIL || process.env.MAIL_USER,
-        subject: `New Talent Booking Request: ${type}`,
+        from: `${fullName} <${email}>`,
+        to: `"Boxonia HQ" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
+        subject: "New Talent Booking Request",
         text: `
             You have a new booking request.
 
-            Type: ${type}
-            Platform: ${platform}
+            Name: ${fullName}
+            email: ${email}
+            Type: ${type.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')}
+            Platform: ${platform.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')}
             Synopsis: ${synopsis}
             Duration: ${duration}
             Payment: ${payment}
         `,
         html: `
             <h2>New Booking Request</h2>
-            <p><strong>Type:</strong> ${type}</p>
-            <p><strong>Platform:</strong> ${platform}</p>
+            <p><strong>Full Name:</strong> ${fullName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Type:</strong> ${type.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')}</p>
+            <p><strong>Platform:</strong> ${platform.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')}</p>
             <p><strong>Synopsis:</strong> ${synopsis}</p>
             <p><strong>Duration:</strong> ${duration}</p>
             <p><strong>Payment:</strong> ${payment}</p>
         `,
     });
 };
-
 
 module.exports = {
     contactUsMail,

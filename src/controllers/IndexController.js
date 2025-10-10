@@ -60,11 +60,11 @@ class IndexController {
             const findTalent = await Talent.findById(talent);
 
             if (!findTalent) {
-            return res.status(404).json({
-                success: false,
-                message: 'Talent not found',
-            });
-        }
+                return res.status(404).json({
+                    success: false,
+                    message: 'Talent not found',
+                });
+            }
 
             const booking = await BookTalent.create({
                 ...value,
@@ -74,8 +74,7 @@ class IndexController {
 
             return res.status(201).json({
                 success: true,
-                message: 'Talent booked successfully',
-                data: booking,
+                message: 'Talent booked successfully'
             });
         } catch (err) {
             console.error('Error saving booking:', err);

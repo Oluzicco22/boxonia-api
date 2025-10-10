@@ -7,6 +7,14 @@ const bookTalentSchema = new mongoose.Schema({
         required: true,
         index: true
     },
+    email: {
+        type: String,
+        required: true,
+    },
+    fullName: {
+        type: String,
+        required: true,
+    },
     type: {
         type: String,
         enum: [
@@ -21,7 +29,7 @@ const bookTalentSchema = new mongoose.Schema({
     },
     platform: {
         type: String,
-        enum: ['cinema', 'netflix', 'amazon', 'youtube'],
+        enum: ['cinema', 'netflix', 'amazon', 'youtube', "others"],
         required: true
     },
     synopsis: {

@@ -3,15 +3,17 @@ const Joi = require('joi');
 const bookingRequest = (data) => {
     const schema = Joi.object({
         type: Joi.string()
-            .valid('feature film', 'short film', 'ad commercial', 'music video', 'brand influencing', 'others')
             .required()
+            .lowercase()
+            .valid('feature film', 'short film', 'ad commercial', 'music video', 'brand influencing', 'others')
             .messages({
                 'any.only': 'Type must be one of: feature film, short film, ad commercial, music video, brand influencing, others',
                 'string.empty': 'Type is required',
             }),
 
         platform: Joi.string()
-            .valid('cinema', 'netflix', 'amazon', 'youtube')
+            .lowercase()
+            .valid('cinema', 'netflix', 'amazon', 'youtube', 'others')
             .required()
             .messages({
                 'any.only': 'Platform must be one of: cinema, netflix, amazon, youtube',
@@ -37,6 +39,8 @@ const bookingRequest = (data) => {
             .messages({
                 'string.empty': 'Payment is required',
             }),
+        fullName: Joi.string().required(),
+        email: Joi.string().email().required()
     });
 
     return schema.validate(data, { abortEarly: false });
