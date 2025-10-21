@@ -1,25 +1,25 @@
 const transporter = require("../config/mailer");
 
 const contactUsMail = async (contact) => {
-    const { subject, message, name, email } = contact;
+    const { message, firstName, lastName, email } = contact;
 
     try {
         await transporter.sendMail({
             from: `"Boxonia Contact" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
             to: process.env.ADMIN_EMAIL || process.env.MAIL_USER,
-            subject: `New Contact Request: ${subject}`,
+            subject: 'New Contact Request',
             text: `
             You have a new contact request.
-            Name: ${name}
+            Name: ${firstName} ${lastName}
             Email: ${email}
-            Subject: ${subject}
+            Subject: 'Contact Mail
             Message: ${message}
             `,
             html: `
                 <h2>New Contact Request</h2>
-                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Name:</strong> ${firstName} ${lastName}</p>
                 <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Subject:</strong> ${subject}</p>
+                <p><strong>Subject:</strong>Contact Mail</p>
                 <p><strong>Message:</strong><br/> ${message}</p>
             `})
         console.log('Email is sending....')
@@ -29,16 +29,16 @@ const contactUsMail = async (contact) => {
 };
 
 const autoReplyMail = async (contact) => {
-    const { name, email } = contact;
+    const { firstName, lastName, email } = contact;
 
     try {
         await transporter.sendMail({
             from: `"Support Team" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
-            to: email,
+            to: `${firstName} ${lastName} <${email}>`,
             subject: `We received your request`,
-            text: `Hello ${name},\n\nThank you for contacting us. Our team will get back to you shortly.\n\nBest regards,\nSupport Team`,
+            text: `Hello ${firstName} ${lastName},\n\nThank you for contacting us. Our team will get back to you shortly.\n\nBest regards,\nSupport Team`,
             html: `
-        <p>Hello <strong>${name}</strong>,</p>
+        <p>Hello <strong>${firstName} ${lastName}</strong>,</p>
         <p>Thank you for reaching out to us. Our team will get back to you shortly.</p>
         <p>Best regards,<br/>Support Team</p>
       `,
