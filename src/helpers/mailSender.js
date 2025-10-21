@@ -42,8 +42,11 @@ const autoReplyMail = async (contact) => {
             \n\nWarm regards,\nThe Boxonia Blueprint Team`,
             html: `
         <p>Hello <strong>${firstName} ${lastName}</strong>,</p>
-        <p>Thank you for reaching out to us. Our team will get back to you shortly.</p>
-        <p>Best regards,<br/>Support Team</p>
+        <p>Thank you for reaching out to Boxonia Blueprint. We’ve received your message and truly appreciate your interest.</p>
+        <p>At Boxonia Blueprint, we tell exportable, authentic, and audacious African stories, rooted in Africa, made for the world.</p>
+        <p>Our team is currently reviewing your inquiry and will get back to you as soon as possible.</p>
+
+        <p>Warm regards,<br/>The Boxonia Blueprint Team</p>
       `,
         });
         return true;
