@@ -36,7 +36,10 @@ const autoReplyMail = async (contact) => {
             from: `"Support Team" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
             to: `${firstName} ${lastName} <${email}>`,
             subject: `We received your request`,
-            text: `Hello ${firstName} ${lastName},\n\nThank you for contacting us. Our team will get back to you shortly.\n\nBest regards,\nSupport Team`,
+            text: `Hello ${firstName} ${lastName},\n\nThank you for reaching out to Boxonia Blueprint. We’ve received your message and truly appreciate your interest.
+            \n\nAt Boxonia Blueprint, we tell exportable, authentic, and audacious African stories, rooted in Africa, made for the world.
+            \n\nOur team is currently reviewing your inquiry and will get back to you as soon as possible.
+            \n\nWarm regards,\nThe Boxonia Blueprint Team`,
             html: `
         <p>Hello <strong>${firstName} ${lastName}</strong>,</p>
         <p>Thank you for reaching out to us. Our team will get back to you shortly.</p>
