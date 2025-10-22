@@ -56,8 +56,9 @@ const autoReplyMail = async (contact) => {
     }
 };
 
-const bookTalentMail = async (booking) => {
+const bookTalentMail = async (booking, talent) => {
     const { type, platform, synopsis, duration, payment, fullName, email } = booking;
+    const { firstName, lastName } = talent;
 
     await transporter.sendMail({
         from: `${fullName} <${email}>`,
@@ -77,6 +78,7 @@ const bookTalentMail = async (booking) => {
             Synopsis: ${synopsis}
             Duration: ${duration}
             Payment: ${payment}
+            Talent: ${firstName} ${lastName}
         `,
         html: `
             <h2>New Booking Request</h2>
@@ -91,6 +93,7 @@ const bookTalentMail = async (booking) => {
             <p><strong>Synopsis:</strong> ${synopsis}</p>
             <p><strong>Duration:</strong> ${duration}</p>
             <p><strong>Payment:</strong> ${payment}</p>
+            <p><strong>Talent:</strong> ${firstName} ${lastName}</p>
         `,
     });
 };

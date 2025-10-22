@@ -70,7 +70,7 @@ class IndexController {
                 ...value,
                 talent: findTalent._id
             });
-            bookTalentMail(booking)
+            bookTalentMail(booking, findTalent)
 
             return res.status(201).json({
                 success: true,
