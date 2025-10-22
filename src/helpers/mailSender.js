@@ -33,7 +33,7 @@ const autoReplyMail = async (contact) => {
 
     try {
         await transporter.sendMail({
-            from: `"Support Team" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
+            from: `"Boxonia" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
             to: `${firstName} ${lastName} <${email}>`,
             subject: `We received your request`,
             text: `Hello ${firstName} ${lastName},\n\nThank you for reaching out to Boxonia Blueprint. We’ve received your message and truly appreciate your interest.
