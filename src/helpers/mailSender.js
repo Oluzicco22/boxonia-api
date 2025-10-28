@@ -69,6 +69,7 @@ const bookTalentMail = async (booking, talent) => {
 
             Name: ${fullName}
             email: ${email}
+            Talent: ${firstName} ${lastName}
             Type: ${type.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ')}
@@ -78,7 +79,6 @@ const bookTalentMail = async (booking, talent) => {
             Synopsis: ${synopsis}
             Duration: ${duration}
             Payment: ${payment}
-            Talent: ${firstName} ${lastName}
         `,
         html: `
             <h2>New Booking Request</h2>

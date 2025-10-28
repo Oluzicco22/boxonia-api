@@ -74,7 +74,7 @@ class IndexController {
 
             return res.status(201).json({
                 success: true,
-                message: 'Talent booked successfully'
+                message: 'We’ve got your booking request!',
             });
         } catch (err) {
             console.error('Error saving booking:', err);
@@ -87,7 +87,7 @@ class IndexController {
 
     async readTalents(req, res) {
         try {
-            const talents = await Talent.find({}).select('-createdAt -updatedAt -__v');
+            const talents = await Talent.find({}).select('-createdAt -updatedAt -__v').sort('createdAt');
 
             return res.status(200).json({
                 success: true,
