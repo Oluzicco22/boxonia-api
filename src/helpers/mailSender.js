@@ -58,11 +58,11 @@ const autoReplyMail = async (contact) => {
 
 const bookTalentMail = async (booking, talent) => {
     const { type, platform, synopsis, duration, payment, fullName, email } = booking;
-    const { firstName, lastName } = talent;
+    const { firstName, lastName, email:talentEmail } = talent;
 
     await transporter.sendMail({
         from: `${fullName} <${email}>`,
-        to: `"Boxonia HQ" <${process.env.ADMIN_EMAIL || process.env.MAIL_USER}>`,
+        to: `"${firstName} ${lastName}" <${talentEmail}>`,
         subject: "New Talent Booking Request",
         text: `
             You have a new booking request.
@@ -84,6 +84,7 @@ const bookTalentMail = async (booking, talent) => {
             <h2>New Booking Request</h2>
             <p><strong>Full Name:</strong> ${fullName}</p>
             <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Talent:</strong> ${firstName} ${lastName}</p>
             <p><strong>Type:</strong> ${type.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ')}</p>
@@ -93,7 +94,6 @@ const bookTalentMail = async (booking, talent) => {
             <p><strong>Synopsis:</strong> ${synopsis}</p>
             <p><strong>Duration:</strong> ${duration}</p>
             <p><strong>Payment:</strong> ${payment}</p>
-            <p><strong>Talent:</strong> ${firstName} ${lastName}</p>
         `,
     });
 };
