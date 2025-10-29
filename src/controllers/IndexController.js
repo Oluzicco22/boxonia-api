@@ -1,16 +1,16 @@
 const contactRequest = require('../requests/contactUs');
 const bookingRequest = require('../requests/bookingRequest');
 const Contact = require('../models/Contact');
-const {contactUsMail, autoReplyMail, bookTalentMail} = require("../helpers/mailSender");
+const { contactUsMail, autoReplyMail, bookTalentMail, autoReplyBookingMail } = require("../helpers/mailSender");
 const Talent = require('../models/talent');
 const BookTalent = require('../models/booking');
 
 class IndexController {
-
-    async sendContact(req, res){
+    // ---------------- CONTACT FORM ---------------- //
+    async sendContact(req, res) {
         const { error, value } = contactRequest(req.body || {});
 
-        if(error){
+        if (error) {
             return res.status(400).json({
                 success: false,
                 message: 'Validation failed',
@@ -18,17 +18,19 @@ class IndexController {
             });
         }
 
-        try{
-            const contact = await Contact.create({...value});
-            contactUsMail(contact);
-            autoReplyMail(contact);
+        try {
+            const contact = await Contact.create({ ...value });
+
+            // send mail to admin and auto reply to user
+            await contactUsMail(contact);
+            await autoReplyMail(contact);
 
             return res.status(200).json({
                 success: true,
-                message: 'Contact request submitted successfully'
+                message: 'Contact request submitted successfully',
             });
-        }catch(err){
-            console.error(err);
+        } catch (err) {
+            console.error("❌ Error saving contact:", err);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -36,10 +38,11 @@ class IndexController {
         }
     }
 
-    async bookTalent(req, res){
+    // ---------------- TALENT BOOKING ---------------- //
+    async bookTalent(req, res) {
         const { error, value } = bookingRequest(req.body || {});
 
-        if(error){
+        if (error) {
             return res.status(400).json({
                 success: false,
                 message: 'Validation failed',
@@ -48,7 +51,6 @@ class IndexController {
         }
 
         const { talent } = req.params;
-
         if (!talent) {
             return res.status(400).json({
                 success: false,
@@ -58,7 +60,6 @@ class IndexController {
 
         try {
             const findTalent = await Talent.findById(talent);
-
             if (!findTalent) {
                 return res.status(404).json({
                     success: false,
@@ -66,18 +67,24 @@ class IndexController {
                 });
             }
 
+            // save booking to DB
             const booking = await BookTalent.create({
                 ...value,
-                talent: findTalent._id
+                talent: findTalent._id,
             });
-            bookTalentMail(booking, findTalent)
+
+            // send mail to the specific talent
+            await bookTalentMail(booking, findTalent);
+
+            // send auto-reply to the booking user
+            await autoReplyBookingMail(booking, findTalent);
 
             return res.status(201).json({
                 success: true,
                 message: 'We’ve got your booking request!',
             });
         } catch (err) {
-            console.error('Error saving booking:', err);
+            console.error('❌ Error saving booking:', err);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -85,9 +92,12 @@ class IndexController {
         }
     }
 
+    // ---------------- FETCH ALL TALENTS ---------------- //
     async readTalents(req, res) {
         try {
-            const talents = await Talent.find({}).select('-createdAt -updatedAt -__v').sort('createdAt');
+            const talents = await Talent.find({})
+                .select('-createdAt -updatedAt -__v')
+                .sort('createdAt');
 
             return res.status(200).json({
                 success: true,
@@ -95,7 +105,7 @@ class IndexController {
                 data: talents,
             });
         } catch (err) {
-            console.error('Error fetching talents:', err);
+            console.error('❌ Error fetching talents:', err);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -103,10 +113,12 @@ class IndexController {
         }
     }
 
+    // ---------------- FETCH SINGLE TALENT ---------------- //
     async readTalent(req, res) {
         const { talentId } = req.params;
         try {
-            const talent = await Talent.findById(talentId).select('-createdAt -updatedAt -__v');
+            const talent = await Talent.findById(talentId)
+                .select('-createdAt -updatedAt -__v');
 
             if (!talent) {
                 return res.status(404).json({
@@ -121,7 +133,7 @@ class IndexController {
                 data: talent,
             });
         } catch (err) {
-            console.error('Error fetching talent:', err);
+            console.error('❌ Error fetching talent:', err);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',

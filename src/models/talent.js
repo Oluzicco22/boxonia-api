@@ -13,6 +13,12 @@ const talentSchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+    },
     username: {
         type: String,
         trim: true
